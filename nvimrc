@@ -202,6 +202,12 @@ set wildignore+=*/output/*
 set wildignore+=*/bower_components/*
 set wildignore+=*/node_modules/*
 set wildignore+=*/projects/*
+
+" Vim
+set wildignore+=*/spell/*
+set wildignore+=*/plugged/*
+
+" Elm
 set wildignore+=*/elm-stuff/*
 
 " SBT
