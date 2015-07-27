@@ -113,13 +113,20 @@ let g:neoterm_position = 'vertical'
 " Leader + e = exit terminal mode
 tnoremap <Leader><Esc> <C-\><C-n>
 
-" Ctrl + w + Ctrl + s = split window horizontally
+" Ctrl + w + n = create new window with empty buffer
+tnoremap <C-w>n     <C-\><C-n><C-w>n
+tnoremap <C-w><C-n> <C-\><C-n><C-w><C-n>
+
+" Ctrl + w + s = split window horizontally
+tnoremap <C-w>s     <C-\><C-n><C-w>s
 tnoremap <C-w><C-s> <C-\><C-n><C-w><C-s>
 
-" Ctrl + w + Ctrl + v = split window vertically
+" Ctrl + w + v = split window vertically
+tnoremap <C-w>v     <C-\><C-n><C-w>v
 tnoremap <C-w><C-v> <C-\><C-n><C-w><C-v>
 
-" Ctrl + w + Ctrl + w = move cursor to window below/right of the current one
+" Ctrl + w + w = move cursor to window below/right of the current one
+tnoremap <C-w>w     <C-\><C-n><C-w>w
 tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
 
 " Ctrl + w + c = close current window
