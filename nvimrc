@@ -255,6 +255,7 @@ set softtabstop=0
 
 au FileType vim setlocal shiftwidth=2
 au FileType vim setlocal softtabstop=2
+au FileType vim setlocal textwidth=72
 
 
 "-- Haskell ------------------------------------------------------------
@@ -274,3 +275,9 @@ let hs_highlight_types = 1
 let hs_highlight_boolean = 1
 let hs_highlight_debug = 1
 let hs_allow_hash_operator = 1
+
+" Register 'nvim-hs' as the 'haskell' plugin host
+call remote#host#Register('haskell', "*.[cl]\?hs", rpcstart('nvim-hs', ['haskell']))
+
+" Blocks until nvim-hs has started (optional)
+call rpcrequest(remote#host#Require('haskell'), 'PingNvimhs', [])
