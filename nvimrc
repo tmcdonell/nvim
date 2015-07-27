@@ -145,6 +145,9 @@ autocmd BufLeave term://* stopinsert
 set number
 set numberwidth=5
 
+" Disable highlighting of search matches
+set nohlsearch
+
 " Disable folding
 set nofoldenable
 
