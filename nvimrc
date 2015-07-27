@@ -224,6 +224,15 @@ set wildignore+=*/target/test-reports/*
 set wildignore+=*/target/maven-*/*
 
 
+"-- Fugitive -----------------------------------------------------------
+
+" Leader + gd = diff current vs git head
+nnoremap <Leader>d :Gdiff<cr>
+
+" Leader + gD = Switch back to current file and closes Fugitive buffer
+nnoremap <Leader>D <c-w>h<c-w>c
+
+
 "-- Easy Align ---------------------------------------------------------
 
 " vip<Enter> = Start interactive EasyAlign in visual mode
