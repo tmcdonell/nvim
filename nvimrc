@@ -105,6 +105,33 @@ function! VPaste()
 endfunction
 
 
+"-- Terminal Mode / neoterm --------------------------------------------
+
+" Open neoterm windows in a vertical split
+let g:neoterm_position = 'vertical'
+
+" Leader + e = exit terminal mode
+tnoremap <Leader><Esc> <C-\><C-n>
+
+" Ctrl + w + Ctrl + s = split window horizontally
+tnoremap <C-w><C-s> <C-\><C-n><C-w><C-s>
+
+" Ctrl + w + Ctrl + v = split window vertically
+tnoremap <C-w><C-v> <C-\><C-n><C-w><C-v>
+
+" Ctrl + w + Ctrl + w = move cursor to window below/right of the current one
+tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
+
+" Ctrl + w + c = close current window
+tnoremap <C-w>c <C-\><C-n><C-w>c
+
+" Always start insert mode when you enter a terminal window
+autocmd BufWinEnter,WinEnter term://* startinsert
+
+" Always stop insert mode when you leave a terminal window
+autocmd BufLeave term://* stopinsert
+
+
 "-- Buffers ------------------------------------------------------------
 
 " Show line numbers
@@ -118,15 +145,18 @@ set nofoldenable
 set hidden
 
 " Ctrl + j = next buffer
-nnoremap <C-j> :bnext<CR>
+nnoremap <C-j>           :bnext<CR>
+tnoremap <C-j> <C-\><C-n>:bnext<CR>
 
 " Ctrl + k = previous buffer
-nnoremap <C-k> :bprevious<CR>
+nnoremap <C-k>           :bprevious<CR>
+tnoremap <C-k> <C-\><C-n>:bprevious<CR>
 
 " Ctrl + l = close buffer
-nnoremap <C-l> :bdelete<CR>
+nnoremap <C-l>           :bdelete<CR>
+nnoremap <C-l> <C-\><C-n>:bdelete<CR>
 
-" (buffer id) + <Leader> = jump to buffer
+" (buffer id) + Leader = jump to buffer
 let buffer_id = 1
 while buffer_id <= 99
   execute "nnoremap " . buffer_id . "<Leader> :" . buffer_id . "b\<CR>"
@@ -136,8 +166,13 @@ endwhile
 
 "-- Ctrl+P -------------------------------------------------------------
 
+" Leader + t = find file in project
 nnoremap <silent> <Leader>t :CtrlP<CR>
+
+" Leader + b = find file in open buffers
 nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
+
+" Leader + r = clean file cache
 nnoremap <silent> <Leader>r :CtrlPClearCache<CR>
 
 let g:ctrlp_root_markers = ['*.cabal', 'sbt', 'build.sbt', 'pom.xml']
@@ -176,26 +211,43 @@ set wildignore+=*/target/test-reports/*
 set wildignore+=*/target/maven-*/*
 
 
-"-- Terminal Mode ------------------------------------------------------
-
-" Leader + e = exit terminal mode
-tnoremap <Leader>e <C-\><C-n>
-
-
 "-- Easy Align ---------------------------------------------------------
 
-" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+" vip<Enter> = Start interactive EasyAlign in visual mode
 vmap <Enter> <Plug>(EasyAlign)
 
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+" gaip = Start interactive EasyAlign for a motion/text object
 nmap ga <Plug>(EasyAlign)
 
 
-"-- Replace word under cursor ------------------------------------------
-" Usage: type <Leader>s on "foo" and then type "bar/g" to
-"        replace foo with bar
+"-- Word manipulation --------------------------------------------------
 
+" Leader + s = replace word under cursor
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
+" gw = Swap current word with next
+nnoremap <silent> gw "_yiw:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><C-o><C-l>
+
+
+"-- Language Defaults --------------------------------------------------
+
+" How many columns a tab counts for
+set tabstop=8
+
+" Tab in insert mode will produce the appropriate number of spaces
+set expandtab
+
+" How many columns text is indented with the reindent operations
+set shiftwidth=8
+
+" How many columns vim uses when you hit Tab in insert mode
+set softtabstop=0
+
+
+"-- VimL ---------------------------------------------------------------
+
+au FileType vim setlocal shiftwidth=2
+au FileType vim setlocal softtabstop=2
 
 
 "-- Haskell ------------------------------------------------------------
@@ -204,8 +256,8 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 "au BufNewFile,BufRead *.hs,*.hsc,*.lhs,*.dump-simpl set filetype=haskell
 "au BufNewFile,BufRead *.lhs set syntax=lhaskell
 au FileType haskell setlocal iskeyword+='
-au FileType haskell setlocal tabstop=4
 au FileType haskell setlocal shiftwidth=4
+au FileType haskell setlocal softtabstop=4
 au FileType haskell setlocal path=src,,
 au FileType haskell setlocal include=^import\\s*\\(qualified\\)\\?\\s*
 au FileType haskell setlocal includeexpr=substitute(v:fname,'\\.','/','g').'.hs'
