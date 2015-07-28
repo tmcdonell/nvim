@@ -35,8 +35,8 @@ Plug 'vim-pandoc/vim-pandoc'
 " Pandoc markdown syntax, to be installed alongside vim-pandoc
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
-" A vim mode for Haskell (forked from travitch/hasksyn)
-"Plug '~/src/hasksyn'
+" A plugin for asynchronous :make using Neovim's job-control functionality
+Plug 'benekastah/neomake'
 
 " Integration of Scala into Vim
 Plug 'derekwyatt/vim-scala'
@@ -267,6 +267,20 @@ set shiftwidth=8
 
 " How many columns vim uses when you hit Tab in insert mode
 set softtabstop=0
+
+
+"-- Neomake ------------------------------------------------------------
+
+autocmd! BufWritePost * Neomake
+
+highlight SpellBad gui=NONE term=NONE
+highlight SpellCap gui=NONE term=NONE
+highlight clear SignColumn
+
+call neomake#signs#RedefineErrorSign({ 'texthl': 'SpellBad' })
+call neomake#signs#RedefineWarningSign({ 'texthl': 'SpellCap' })
+
+let g:neomake_haskell_enabled_makers = ['hdevtools']
 
 
 "-- VimL ---------------------------------------------------------------
