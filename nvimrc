@@ -271,7 +271,18 @@ set softtabstop=0
 
 "-- Neomake ------------------------------------------------------------
 
-autocmd! BufWritePost * Neomake
+function! s:NeomakeExclude()
+  let l:path   = expand('%:p:h')
+  let l:ignore = expand('^$HOME/.config/nvim')
+  if match(l:path, l:ignore)
+    Neomake
+  endif
+endfunction
+
+augroup Neomake
+  autocmd!
+  autocmd BufWritePost * call s:NeomakeExclude()
+augroup END
 
 highlight SpellBad gui=NONE term=NONE
 highlight SpellCap gui=NONE term=NONE
