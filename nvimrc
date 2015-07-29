@@ -291,7 +291,25 @@ highlight clear SignColumn
 call neomake#signs#RedefineErrorSign({ 'texthl': 'SpellBad' })
 call neomake#signs#RedefineWarningSign({ 'texthl': 'SpellCap' })
 
-let g:neomake_haskell_enabled_makers = ['hdevtools']
+let g:neomake_haskell_enabled_makers  = ['hdevtools']
+let g:neomake_haskell_hdevtools_maker = {
+    \ 'exe': 'hdevtools',
+    \ 'args': ['check'],
+    \ 'errorformat':
+    \   '%-Z %#,'.
+    \
+    \   '%W%f:%l:%v: Warning: %m,'.
+    \
+    \   '%W%f:%l:%v: Warning:,'.
+    \
+    \   '%E%f:%l:%v: %m,'.
+    \
+    \   '%E%>%f:%l:%v:,'.
+    \   '%+G  %#%m,'.
+    \
+    \   '%W%>%f:%l:%v:,'.
+    \   '%+G  %#%tarning: %m,'
+    \ }
 
 
 "-- VimL ---------------------------------------------------------------
