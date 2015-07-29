@@ -378,8 +378,8 @@ let hs_allow_hash_operator = 1
 "-- nvim-hs ------------------------------------------------------------
 
 function! s:RequireHaskellHost(name)
-  return rpcstart('nvim-hs', [a:name.name])
-  "return rpcstart('nvim-hs', ['-l','/tmp/nvim-hs.log','-v','DEBUG',a:name.name])
+  return rpcstart('nvim-hs-devel.sh', [a:name.name])
+  "return rpcstart('nvim-hs-devel.sh', ['-l','/tmp/nvim-hs.log','-v','DEBUG',a:name.name])
 endfunction
 
 " Lazily register 'nvim-hs' as the 'haskell' plugin host
@@ -387,8 +387,8 @@ call remote#host#Register('haskell', "*.[cl]\?hs", function('s:RequireHaskellHos
 
 " Block until nvim-hs has started
 function! StartHaskellHost()
-  let hc=remote#host#Require('haskell')
-  call rpcrequest(hc, "PingNvimhs")
+  let l:channel = remote#host#Require('haskell')
+  call rpcrequest(l:channel, "PingNvimhs")
 endfunction
 
 "call StartHaskellHost()
