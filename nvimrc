@@ -85,8 +85,26 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 
 "-- Leader Keys --------------------------------------------------------
 
+" This must come before any bindings to <Leader>
 let mapleader      = ","
+
+" This must come before any bindings to <LocalLeader>
 let maplocalleader = ";"
+
+
+"-- nvimrc -------------------------------------------------------------
+
+" Location of nvimrc
+let g:nvimrc = "~/.config/nvim/nvimrc"
+
+" Edit nvimrc
+nnoremap <Leader>m :exec ":e " . g:nvimrc<CR>
+
+" Source the nvimrc file after saving it
+augroup nvimrc
+  autocmd!
+  autocmd BufWritePost nvimrc exec "source " . g:nvimrc | AirlineRefresh
+augroup END
 
 
 "-- OS Clipboard -------------------------------------------------------
@@ -96,9 +114,9 @@ vnoremap <Leader>y "+y
 
 " Leader + p = paste from clipboard
 nnoremap <Leader>p "+gpl
-vnoremap <Leader>p :<C-U>call VPaste()<CR>
+vnoremap <Leader>p :<C-U>call VisualPaste()<CR>
 
-function! VPaste()
+function! VisualPaste()
   normal gv
   normal "+P
   normal l
@@ -132,27 +150,36 @@ tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
 " Ctrl + w + c = close current window
 tnoremap <C-w>c <C-\><C-n><C-w>c
 
-" Always start insert mode when you enter a terminal window
-autocmd BufWinEnter,WinEnter term://* startinsert
+augroup Terminal
+  autocmd!
 
-" Always stop insert mode when you leave a terminal window
-autocmd BufLeave term://* stopinsert
+  " Always start insert mode when you enter a terminal window
+  autocmd BufWinEnter,WinEnter term://* startinsert
+
+  " Always stop insert mode when you leave a terminal window
+  autocmd BufLeave term://* stopinsert
+augroup END
 
 
 "-- Buffers ------------------------------------------------------------
 
-" Show line numbers
-set number
-set numberwidth=5
+if !exists('&g:nvimrc_buffers')
+  " Only source the first time
+  let g:nvimrc_buffers = 1
 
-" Disable highlighting of search matches
-set nohlsearch
+  " Show line numbers
+  set number
+  set numberwidth=5
 
-" Disable folding
-set nofoldenable
+  " Disable highlighting of search matches
+  set nohlsearch
 
-" Don't discard buffer when switching away
-set hidden
+  " Disable folding
+  set nofoldenable
+
+  " Don't discard buffer when switching away
+  set hidden
+endif
 
 " Ctrl + j = next buffer
 nnoremap <C-j>           :bnext<CR>
@@ -256,17 +283,22 @@ nnoremap <silent> gw "_yiw:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><C-o><C-l>
 
 "-- Language Defaults --------------------------------------------------
 
-" How many columns a tab counts for
-set tabstop=8
+if !exists('&g:nvimrc_language_defaults')
+  " Only source the first time
+  let g:nvimrc_language_defaults = 1
 
-" Tab in insert mode will produce the appropriate number of spaces
-set expandtab
+  " How many columns a tab counts for
+  set tabstop=8
 
-" How many columns text is indented with the reindent operations
-set shiftwidth=8
+  " Tab in insert mode will produce the appropriate number of spaces
+  set expandtab
 
-" How many columns vim uses when you hit Tab in insert mode
-set softtabstop=0
+  " How many columns text is indented with the reindent operations
+  set shiftwidth=8
+
+  " How many columns vim uses when you hit Tab in insert mode
+  set softtabstop=0
+endif
 
 
 "-- Neomake ------------------------------------------------------------
@@ -314,23 +346,28 @@ let g:neomake_haskell_hdevtools_maker = {
 
 "-- VimL ---------------------------------------------------------------
 
-au FileType vim setlocal shiftwidth=2
-au FileType vim setlocal softtabstop=2
-au FileType vim setlocal textwidth=72
+augroup VimL
+  autocmd!
+  autocmd FileType vim setlocal shiftwidth=2
+  autocmd FileType vim setlocal softtabstop=2
+  autocmd FileType vim setlocal textwidth=72
+augroup END
 
 
 "-- Haskell ------------------------------------------------------------
 
-"au BufNewFile,BufRead *.dump-cmm set filetype=c
-"au BufNewFile,BufRead *.hs,*.hsc,*.lhs,*.dump-simpl set filetype=haskell
-"au BufNewFile,BufRead *.lhs set syntax=lhaskell
-au FileType haskell setlocal iskeyword+='
-au FileType haskell setlocal shiftwidth=4
-au FileType haskell setlocal softtabstop=4
-au FileType haskell setlocal path=src,,
-au FileType haskell setlocal include=^import\\s*\\(qualified\\)\\?\\s*
-au FileType haskell setlocal includeexpr=substitute(v:fname,'\\.','/','g').'.hs'
-"au FileType haskell call EnableWhitespace('et')
+augroup Haskell
+  autocmd!
+  "autocmd BufNewFile,BufRead *.dump-cmm set filetype=c
+  "autocmd BufNewFile,BufRead *.hs,*.hsc,*.lhs,*.dump-simpl set filetype=haskell
+  "autocmd BufNewFile,BufRead *.lhs set syntax=lhaskell
+  autocmd FileType haskell setlocal iskeyword+='
+  autocmd FileType haskell setlocal shiftwidth=4
+  autocmd FileType haskell setlocal softtabstop=4
+  autocmd FileType haskell setlocal path=src,,
+  autocmd FileType haskell setlocal include=^import\\s*\\(qualified\\)\\?\\s*
+  autocmd FileType haskell setlocal includeexpr=substitute(v:fname,'\\.','/','g').'.hs'
+augroup END
 
 let hs_highlight_types = 1
 let hs_highlight_boolean = 1
