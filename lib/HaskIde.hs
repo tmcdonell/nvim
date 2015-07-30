@@ -2,53 +2,61 @@
 
 module HaskIde where
 
+import           Control.Monad.IO.Class (liftIO)
 import qualified Data.ByteString.Char8 as B
 import           Data.Monoid ((<>))
-import           Control.Monad.IO.Class (liftIO)
+import           System.FilePath (takeDirectory)
 
 import           IdeSession
 import           Neovim
 
 testIde :: Neovim' String
-testIde = liftIO $ do
-    -- Init for HEAD
-    config <- sessionConfigFromEnv
-    sess <- initSession defaultSessionInitParams config
-        { configLocalWorkingDir = Nothing }
+testIde = do
+    Right (ObjectBinary bspath) <- wait (vim_call_function "expand" [ObjectString "%:p"])
+    let path = B.unpack bspath
 
-    -- Init for Hackage v0.9.0.11
-    --sess <- initSession defaultSessionInitParams defaultSessionConfig
+    liftIO $ do
+        -- Init for HEAD
+        --config <- sessionConfigFromEnv
+        sess <- initSession defaultSessionInitParams defaultSessionConfig
+            { configLocalWorkingDir = Just "/Users/jake/src/ddc/ddc/packages/ddc-core-llvm/DDC" }
 
-    let upd = updateSourceFile "Main.hs" "main = putStrLn \"Hello World\""
-           <> updateCodeGeneration True
-           <> updateGhcOpts ["-Wall"]
-    updateSession sess upd (\progress -> return ())
+        -- Init for Hackage v0.9.0.11
+        --sess <- initSession defaultSessionInitParams defaultSessionConfig
 
-    -- Print errors and warnings
-    errs <- getSourceErrors sess
-    let x1 = map show errs
+        let upd = -- updateSourceFile "Main.hs" "main = putStrLn \"Hello World\""
+                  updateCodeGeneration False
+               <> updateGhcOpts ["-Wall"]
+        updateSession sess mempty (\progress -> return ())
 
-    -- Run the code
-    --ra <- runStmt sess "Main" "main"
-    --let loop = do
-    --        res <- runWait ra
-    --        case res of
-    --            Left  bs -> B.putStr bs >> loop
-    --            Right rr -> putStrLn $ "Run result: " ++ show rr
-    --loop
+        -- Print errors and warnings
+        errs <- getSourceErrors sess
+        let x1 = map show errs
 
-    -- Get some type information
-    expTypes <- getExpTypes sess
-    let x2 = map show $ expTypes "Main" SourceSpan
-             { spanFilePath = "Main.hs"
-             , spanFromLine = 1
-             , spanFromColumn = 8
-             , spanToLine = 1
-             , spanToColumn = 9
-             }
+        -- fs <- getManagedFiles sess
+        -- let x1 = [show fs]
 
-    -- Autocompletion
-    autoCompletion <- getAutocompletion sess
-    let x3 = map show $ autoCompletion "Main" "putS"
+        -- Run the code
+        --ra <- runStmt sess "Main" "main"
+        --let loop = do
+        --        res <- runWait ra
+        --        case res of
+        --            Left  bs -> B.putStr bs >> loop
+        --            Right rr -> putStrLn $ "Run result: " ++ show rr
+        --loop
 
-    return $ unlines (x1 ++ x2 ++ x3)
+        -- Get some type information
+        expTypes <- getExpTypes sess
+        let x2 = map show $ expTypes "DDC.Core.Llvm.Convert" SourceSpan
+                 { spanFilePath = "/Users/jake/src/ddc/ddc/packages/ddc-core-llvm/DDC/Core/Llvm/Convert.hs"
+                 , spanFromLine = 47
+                 , spanFromColumn = 25
+                 , spanToLine = 47
+                 , spanToColumn = 25
+                 }
+
+        -- Autocompletion
+        autoCompletion <- getAutocompletion sess
+        let x3 = map show $ autoCompletion "DDC.Core.Llvm.Convert" "nameGlobal"
+
+        return $ unlines (x1 ++ x2 ++ x3)

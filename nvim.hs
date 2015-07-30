@@ -6,15 +6,25 @@ import System.Random
 
 import MyFirstPlugin (fibonacci)
 import RandomPlugin
-import HaskIde
+import GhcModPlugin
+--import HaskIde
 
 ------------------------------------------------------------------------
 
-idePlugin :: IO NeovimPlugin
-idePlugin = wrapPlugin Plugin {
-      exports         = [ $(function' 'testIde) Sync ]
-    , statefulExports = []
+ghcModPlugin :: IO NeovimPlugin
+ghcModPlugin = do
+    wrapPlugin Plugin {
+      exports         = []
+    , statefulExports = [ ((), Nothing, [ $(function' 'testGhcMod) Sync ]) ]
     }
+
+------------------------------------------------------------------------
+
+--idePlugin :: IO NeovimPlugin
+--idePlugin = wrapPlugin Plugin {
+--      exports         = [ $(function' 'testIde) Sync ]
+--    , statefulExports = []
+--    }
 
 ------------------------------------------------------------------------
 
@@ -41,4 +51,4 @@ randomPlugin = do
 ------------------------------------------------------------------------
 
 main :: IO ()
-main = neovim def { plugins = [fibonacciPlugin, randomPlugin, idePlugin] }
+main = neovim def { plugins = [fibonacciPlugin, randomPlugin, ghcModPlugin] }

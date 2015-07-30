@@ -38,6 +38,9 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 " A plugin for asynchronous :make using Neovim's job-control functionality
 Plug 'benekastah/neomake'
 
+" Custom Haskell Vimscripts
+"Plug 'neovimhaskell/haskell-vim'
+
 " Integration of Scala into Vim
 Plug 'derekwyatt/vim-scala'
 
@@ -375,11 +378,30 @@ let hs_highlight_debug = 1
 let hs_allow_hash_operator = 1
 
 
+"" Enable highlighting of forall
+"let g:haskell_enable_quantification = 1
+"
+"" Enable highlighting of mdo and rec
+"let g:haskell_enable_recursivedo = 1
+"
+"" Enable highlighting of proc
+"let g:haskell_enable_arrowsyntax = 1
+"
+"" Enable highlighting of pattern
+"let g:haskell_enable_pattern_synonyms = 1
+"
+"" Enable highlighting of type roles
+"let g:haskell_enable_typeroles = 1
+"
+"" Enable highlighting of static
+"let g:haskell_enable_static_pointers = 1
+
+
 "-- nvim-hs ------------------------------------------------------------
 
 function! s:RequireHaskellHost(name)
-  return rpcstart('nvim-hs-devel.sh', [a:name.name])
-  "return rpcstart('nvim-hs-devel.sh', ['-l','/tmp/nvim-hs.log','-v','DEBUG',a:name.name])
+  "return rpcstart('nvim-hs-devel.sh', [a:name.name])
+  return rpcstart('nvim-hs-devel.sh', ['-l','/tmp/nvim-hs.log','-v','DEBUG',a:name.name])
 endfunction
 
 " Lazily register 'nvim-hs' as the 'haskell' plugin host
