@@ -28,18 +28,6 @@
 " of C preprocessor directives, and for pointing out a bug in the
 " end-of-line comment handling.
 "
-" Options-assign a value to these variables to turn the option on:
-"
-" hs_highlight_delimiters - Highlight delimiter characters--users
-"			    with a light-colored background will
-"			    probably want to turn this on.
-" hs_highlight_boolean - Treat True and False as keywords.
-" hs_highlight_types - Treat names of primitive types as keywords.
-" hs_highlight_debug - Highlight names of debugging functions.
-" hs_allow_hash_operator - Don't highlight seemingly incorrect C
-"			   preprocessor directives but assume them to be
-"			   operators
-"
 "
 
 if version < 600
@@ -104,24 +92,19 @@ sy match hs_DeclareFunction "^[a-z_(]\S*\(\s\|\n\)*::" contains=hs_FunctionName,
 " hi hs_DeclareFunction guibg=red
 
 sy keyword hsStructure data class where instance default deriving family pattern
-sy keyword hsStructure type newtype
+sy keyword hsStructure type newtype forall
 
 sy keyword hsInfix infix infixl infixr
 sy keyword hsStatement  do case of let in
 sy keyword hsConditional if then else
 sy keyword hsStatic static
 
-"if exists("hs_highlight_types")
-  " Primitive types from the standard prelude and libraries.
-  sy match hsType "\<[A-Z]\(\S\&[^,.]\)*\>"
-  sy match hsType "()"
-"endif
+" Primitive types from the standard prelude and libraries.
+sy match hsType "\<[A-Z]\(\S\&[^,.]\)*\>"
+"sy match hsType "()"
 
-" Not real keywords, but close.
-if exists("hs_highlight_boolean")
-  " Boolean constants from the standard prelude.
-  syn keyword hsBoolean True False
-endif
+" Boolean constants from the standard prelude.
+syn keyword hsBoolean True False
 
 syn region	hsPackageString	start=+L\="+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end='$' contains=cSpecial contained
 sy match   hsModuleName  excludenl "\([A-Z]\w*\.\?\)*" contained
@@ -250,15 +233,14 @@ syntax match hsShakespeareQQ /|\%(\_.\%(|]\)\@!\)*\_.|/hs=s+1,he=e-1
   \ contained containedin=hsShakespeareQQuote contains=hsShakespeareInterpolation,@Spell
 
 " Debugging functions from the standard prelude.
-if exists("hs_highlight_debug")
-  syn keyword hsDebug undefined error trace
-endif
+syn keyword hsDebug undefined error trace
 
 " C Preprocessor directives. Shamelessly ripped from c.vim and trimmed
 " First, see whether to flag directive-like lines or not
-if (!exists("hs_allow_hash_operator"))
-    syn match	cError		display "^\s*\(%:\|#\).*$"
-endif
+"if (!exists("hs_allow_hash_operator"))
+"    syn match	cError		display "^\s*\(%:\|#\).*$"
+"endif
+
 " Accept %: for # (C99)
 syn region	cPreCondit	start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\|elif\)\>" skip="\\$" end="$" end="//"me=s-1 contains=cComment,cCppString,cCommentError
 syn match	cPreCondit	display "^\s*\(%:\|#\)\s*\(else\|endif\)\>"
@@ -293,10 +275,7 @@ if version >= 508 || !exists("did_hs_syntax_inits")
   HiLink hsTypedef          Typedef
   HiLink hsVarSym           hsOperator
   HiLink hsConSym           hsOperator
-  if exists("hs_highlight_delimiters")
-    " Some people find this highlighting distracting.
   HiLink hsDelimiter        Delimiter
-  endif
 
   HiLink hsModuleStartLabel Structure
   HiLink hsExportModuleLabel Keyword
@@ -336,10 +315,8 @@ if version >= 508 || !exists("did_hs_syntax_inits")
   HiLink hsPragma           SpecialComment
   HiLink hsBoolean			  Boolean
 
-  if exists("hs_highlight_types")
-      HiLink hsDelimTypeExport  hsType
-      HiLink hsType             Type
-  endif
+  HiLink hsDelimTypeExport  hsType
+  HiLink hsType             Type
 
   HiLink hsDebug            Debug
 

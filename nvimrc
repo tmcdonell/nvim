@@ -372,6 +372,7 @@ augroup END
 
 augroup Haskell
   autocmd!
+
   "autocmd BufNewFile,BufRead *.dump-cmm set filetype=c
   "autocmd BufNewFile,BufRead *.hs,*.hsc,*.lhs,*.dump-simpl set filetype=haskell
   "autocmd BufNewFile,BufRead *.lhs set syntax=lhaskell
@@ -381,31 +382,11 @@ augroup Haskell
   autocmd FileType haskell setlocal path=src,,
   autocmd FileType haskell setlocal include=^import\\s*\\(qualified\\)\\?\\s*
   autocmd FileType haskell setlocal includeexpr=substitute(v:fname,'\\.','/','g').'.hs'
+
+  " Sort then align imports
+  autocmd FileType haskell nnoremap <Leader>ai
+    \ vip :sort r /\u.*/<CR> <Bar> :Tabularize /^import qualified\\|^import\\|^$<CR>
 augroup END
-
-let hs_highlight_types = 1
-let hs_highlight_boolean = 1
-let hs_highlight_debug = 1
-let hs_allow_hash_operator = 1
-
-
-"" Enable highlighting of forall
-"let g:haskell_enable_quantification = 1
-"
-"" Enable highlighting of mdo and rec
-"let g:haskell_enable_recursivedo = 1
-"
-"" Enable highlighting of proc
-"let g:haskell_enable_arrowsyntax = 1
-"
-"" Enable highlighting of pattern
-"let g:haskell_enable_pattern_synonyms = 1
-"
-"" Enable highlighting of type roles
-"let g:haskell_enable_typeroles = 1
-"
-"" Enable highlighting of static
-"let g:haskell_enable_static_pointers = 1
 
 
 "-- nvim-hs ------------------------------------------------------------
