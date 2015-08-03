@@ -1,13 +1,14 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-import Neovim
+import           Neovim
 
-import System.Random
+import qualified Data.Map as Map
+import           System.Random
 
-import MyFirstPlugin (fibonacci)
-import RandomPlugin
-import GhcModPlugin
---import HaskIde
+import           GhcModPlugin
+--import           HaskIde
+import           MyFirstPlugin (fibonacci)
+import           RandomPlugin
 
 ------------------------------------------------------------------------
 
@@ -15,7 +16,7 @@ ghcModPlugin :: IO NeovimPlugin
 ghcModPlugin = do
     wrapPlugin Plugin {
       exports         = []
-    , statefulExports = [ ((), Nothing, [ $(function' 'testGhcMod) Sync ]) ]
+    , statefulExports = [ ((), emptyState, [ $(function' 'testGhcMod) Sync ]) ]
     }
 
 ------------------------------------------------------------------------
