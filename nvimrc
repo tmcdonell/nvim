@@ -415,6 +415,23 @@ augroup LLVM
 augroup END
 
 
+"-- DDC ----------------------------------------------------------------
+
+augroup DDC
+  autocmd!
+  autocmd BufNewFile,BufRead *.ds  set filetype=ddc " Source
+  autocmd BufNewFile,BufRead *.dst set filetype=ddc " Source
+  autocmd BufNewFile,BufRead *.dsx set filetype=ddc " Source
+  autocmd BufNewFile,BufRead *.dcx set filetype=ddc " Core
+  autocmd BufNewFile,BufRead *.dcl set filetype=ddc " Core
+  autocmd BufNewFile,BufRead *.dcs set filetype=ddc " Core
+  autocmd BufNewFile,BufRead *.dce set filetype=ddc " Core
+  autocmd BufNewFile,BufRead *.dct set filetype=ddc " Core
+  autocmd FileType ddc setlocal tabstop=8
+  autocmd FileType ddc setlocal shiftwidth=8
+augroup END
+
+
 "-- Haskell ------------------------------------------------------------
 
 augroup Haskell
