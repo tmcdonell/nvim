@@ -357,6 +357,17 @@ augroup VimL
 augroup END
 
 
+"-- LLVM ---------------------------------------------------------------
+
+augroup LLVM
+  autocmd!
+  autocmd BufNewFile,BufRead *.ll set filetype=llvm
+  autocmd BufNewFile,BufRead *.td set filetype=tablegen
+  autocmd FileType llvm set tabstop=2
+  autocmd FileType llvm set shiftwidth=2
+augroup END
+
+
 "-- Haskell ------------------------------------------------------------
 
 augroup Haskell
