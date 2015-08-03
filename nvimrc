@@ -2,9 +2,6 @@
 
 call plug#begin('~/.nvim/plugged')
 
-" Defaults everyone can agree on
-Plug 'tpope/vim-sensible'
-
 " A Git wrapper so awesome, it should be illegal
 Plug 'tpope/vim-fugitive'
 
@@ -16,6 +13,9 @@ Plug 'FelikZ/ctrlp-py-matcher'
 
 " A Vim alignment plugin
 Plug 'junegunn/vim-easy-align'
+
+" Configurable, flexible, intuitive text aligning
+Plug 'godlygeek/tabular'
 
 " Wrapper of some neovim's :terminal functions
 Plug 'kassio/neoterm'
@@ -37,9 +37,6 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 
 " A plugin for asynchronous :make using Neovim's job-control functionality
 Plug 'benekastah/neomake'
-
-" Custom Haskell Vimscripts
-"Plug 'neovimhaskell/haskell-vim'
 
 " Integration of Scala into Vim
 Plug 'derekwyatt/vim-scala'
@@ -131,7 +128,7 @@ endfunction
 " Open neoterm windows in a vertical split
 let g:neoterm_position = 'vertical'
 
-" Leader + e = exit terminal mode
+" Leader + Esc = exit terminal mode
 tnoremap <Leader><Esc> <C-\><C-n>
 
 " Ctrl + w + n = create new window with empty buffer
@@ -166,9 +163,18 @@ augroup END
 
 "-- Buffers ------------------------------------------------------------
 
-if !exists('&g:nvimrc_buffers')
+if !exists('g:nvimrc_buffers')
   " Only source the first time
   let g:nvimrc_buffers = 1
+
+  " Show ruler
+  set ruler
+
+  " Show command in the last line of the screen
+  set showcmd
+
+  " Always show status line
+  set laststatus=2
 
   " Show line numbers
   set number
@@ -202,6 +208,21 @@ while buffer_id <= 99
   execute "nnoremap " . buffer_id . "<Leader> :" . buffer_id . "b\<CR>"
   let buffer_id += 1
 endwhile
+
+
+"-- Grep ---------------------------------------------------------------
+
+" Grep word under cursor, same file type
+nnoremap <Leader>g
+  \ :noautocmd lvim /\<lt><C-R><C-W>\>/gj
+  \ **/*<C-R>=(expand("%:e")=="" ? "" : ".".expand("%:e"))<CR>
+  \ <Bar> lw<CR>
+
+" Grep word under cursor, all files
+nnoremap <Leader>G
+  \ :noautocmd lvim /\<lt><C-R><C-W>\>/gj
+  \ **
+  \ <Bar> lw<CR>
 
 
 "-- Ctrl+P -------------------------------------------------------------
@@ -275,6 +296,17 @@ vmap <Enter> <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 
+"-- Tabular ------------------------------------------------------------
+
+" Align = or += or &= or == or ==>
+nnoremap <Leader>a= :Tabularize /[+&]\?=\+[>]\?<CR>
+vnoremap <Leader>a= :Tabularize /[+&]\?=\+[>]\?<CR>
+
+" Align -> or <-
+nnoremap <Leader>a- :Tabularize /-\+>\\|<-\+<CR>
+vnoremap <Leader>a- :Tabularize /-\+>\\|<-\+<CR>
+
+
 "-- Word manipulation --------------------------------------------------
 
 " Leader + s = replace word under cursor
@@ -286,7 +318,7 @@ nnoremap <silent> gw "_yiw:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><C-o><C-l>
 
 "-- Language Defaults --------------------------------------------------
 
-if !exists('&g:nvimrc_language_defaults')
+if !exists('g:nvimrc_language_defaults')
   " Only source the first time
   let g:nvimrc_language_defaults = 1
 
@@ -301,10 +333,20 @@ if !exists('&g:nvimrc_language_defaults')
 
   " How many columns vim uses when you hit Tab in insert mode
   set softtabstop=0
+
+  " Prevent backspace from deleting multiple spaces, thinking that it
+  " means a <Tab>
+  set nosmarttab
 endif
 
 
 "-- Neomake ------------------------------------------------------------
+
+" Leader + e = open location list
+nnoremap <Leader>e :lopen<CR>
+
+" Leader + E = close location list
+nnoremap <Leader>E :lclose<CR>
 
 function! s:NeomakeExclude()
   let l:path   = expand('%:p:h')
@@ -319,12 +361,17 @@ augroup Neomake
   autocmd BufWritePost * call s:NeomakeExclude()
 augroup END
 
-highlight SpellBad gui=NONE term=NONE
-highlight SpellCap gui=NONE term=NONE
-highlight clear SignColumn
+if !exists('g:nvimrc_neomake')
+  " Only source the first time
+  let g:nvimrc_neomake = 1
 
-call neomake#signs#RedefineErrorSign({ 'texthl': 'SpellBad' })
-call neomake#signs#RedefineWarningSign({ 'texthl': 'SpellCap' })
+  highlight SpellBad gui=NONE term=NONE
+  highlight SpellCap gui=NONE term=NONE
+  highlight clear SignColumn
+
+  call neomake#signs#RedefineErrorSign({ 'texthl': 'SpellBad' })
+  call neomake#signs#RedefineWarningSign({ 'texthl': 'SpellCap' })
+endif
 
 let g:neomake_haskell_enabled_makers  = ['hdevtools']
 let g:neomake_haskell_hdevtools_maker = {
@@ -351,8 +398,8 @@ let g:neomake_haskell_hdevtools_maker = {
 
 augroup VimL
   autocmd!
+  autocmd FileType vim setlocal tabstop=2
   autocmd FileType vim setlocal shiftwidth=2
-  autocmd FileType vim setlocal softtabstop=2
   autocmd FileType vim setlocal textwidth=72
 augroup END
 
@@ -377,8 +424,8 @@ augroup Haskell
   "autocmd BufNewFile,BufRead *.hs,*.hsc,*.lhs,*.dump-simpl set filetype=haskell
   "autocmd BufNewFile,BufRead *.lhs set syntax=lhaskell
   autocmd FileType haskell setlocal iskeyword+='
+  autocmd FileType haskell setlocal tabstop=4
   autocmd FileType haskell setlocal shiftwidth=4
-  autocmd FileType haskell setlocal softtabstop=4
   autocmd FileType haskell setlocal path=src,,
   autocmd FileType haskell setlocal include=^import\\s*\\(qualified\\)\\?\\s*
   autocmd FileType haskell setlocal includeexpr=substitute(v:fname,'\\.','/','g').'.hs'
