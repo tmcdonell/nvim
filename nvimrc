@@ -49,9 +49,12 @@ call plug#end()
 set background=dark
 
 "colorscheme jellybeans
-colorscheme hybrid_material
 "colorscheme hybrid_reverse
 "colorscheme base16-ocean
+
+" Hybrid Material + Custom
+colorscheme hybrid_material
+highlight SpecialComment guifg=#75bd84
 
 " Matches iTerm2 Colors
 let g:terminal_color_0  = '#808080'
