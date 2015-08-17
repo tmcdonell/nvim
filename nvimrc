@@ -376,26 +376,20 @@ if !exists('g:nvimrc_neomake')
   call neomake#signs#RedefineWarningSign({ 'texthl': 'SpellCap' })
 endif
 
-let g:neomake_haskell_enabled_makers  = ['hdevtools']
-let g:neomake_haskell_hdevtools_maker = {
-    \ 'exe': 'hdevtools',
-    \ 'args': ['check'],
-    \ 'errorformat':
-    \   '%-Z %#,'.
-    \
-    \   '%W%f:%l:%v: Warning: %m,'.
-    \
-    \   '%W%f:%l:%v: Warning:,'.
-    \
-    \   '%E%f:%l:%v: %m,'.
-    \
-    \   '%E%>%f:%l:%v:,'.
-    \   '%+G  %#%m,'.
-    \
-    \   '%W%>%f:%l:%v:,'.
-    \   '%+G  %#%tarning: %m,'
-    \ }
+let g:neomake_haskell_enabled_makers  = ['ghcmod']
 
+let g:neomake_haskell_ghcmod_maker = {
+    \ 'exe': 'ghc-mod',
+    \ 'args': ['check', "-b\n"],
+    \ 'errorformat':
+      \ '%-Z %#,' .
+      \ '%E%f:%l:%c:Error: %m,' .
+      \ '%W%f:%l:%c:Warning: %m,'.
+      \ '%E%f:%l:%c: Error: %m,' .
+      \ '%W%f:%l:%c: Warning: %m,' .
+      \ '%E%f:%l:%c:%m,' .
+      \ '%m'
+    \ }
 
 "-- VimL ---------------------------------------------------------------
 
