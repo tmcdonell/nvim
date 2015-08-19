@@ -406,6 +406,16 @@ augroup VimL
 augroup END
 
 
+"-- Bash ---------------------------------------------------------------
+
+augroup Bash
+  autocmd!
+  autocmd FileType sh setlocal tabstop=2
+  autocmd FileType sh setlocal shiftwidth=2
+  autocmd FileType sh setlocal textwidth=72
+augroup END
+
+
 "-- Pandoc -------------------------------------------------------------
 
 augroup Pandoc
