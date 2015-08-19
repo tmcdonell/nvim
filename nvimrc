@@ -59,6 +59,7 @@ set background=dark
 " Hybrid Material + Custom
 colorscheme hybrid_material
 highlight SpecialComment guifg=#75bd84
+highlight Conceal        guibg=none
 
 " Matches iTerm2 Colors
 let g:terminal_color_0  = '#808080'
@@ -402,6 +403,16 @@ augroup VimL
   autocmd FileType vim setlocal tabstop=2
   autocmd FileType vim setlocal shiftwidth=2
   autocmd FileType vim setlocal textwidth=72
+augroup END
+
+
+"-- Pandoc -------------------------------------------------------------
+
+augroup Pandoc
+  autocmd!
+  autocmd FileType pandoc setlocal tabstop=4
+  autocmd FileType pandoc setlocal shiftwidth=4
+  autocmd FileType pandoc setlocal textwidth=72
 augroup END
 
 
