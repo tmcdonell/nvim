@@ -479,8 +479,21 @@ augroup Haskell
   autocmd FileType haskell setlocal includeexpr=substitute(v:fname,'\\.','/','g').'.hs'
 
   " Sort then align imports
-  autocmd FileType haskell nnoremap <Leader>ai
+  autocmd FileType haskell nnoremap <silent> <Leader>ai
     \ vip :sort r /\u.*/<CR> <Bar> :Tabularize /^import qualified\\|^import\\|^$<CR>
+
+  " ghc-mod
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>t :GhcModType<CR>
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>T :GhcModTypeClear<CR>
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>i :GhcModTypeInsert<CR>
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>c :GhcModSplitFunCase<CR>
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>d :GhcModSigCodegen<CR>
+
+  " ghci
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>q :T ./cabal quick "%"<CR>
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>r :T :r<CR>
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>e :TREPLSend<CR>
+  autocmd FileType haskell vnoremap <silent> <LocalLeader>e :TREPLSend<CR>
 augroup END
 
 
