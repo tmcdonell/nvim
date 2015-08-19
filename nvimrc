@@ -426,6 +426,15 @@ augroup Pandoc
 augroup END
 
 
+"-- C ------------------------------------------------------------------
+
+augroup C
+  autocmd!
+  autocmd FileType c set tabstop=4
+  autocmd FileType c set shiftwidth=4
+augroup END
+
+
 "-- LLVM ---------------------------------------------------------------
 
 augroup LLVM
