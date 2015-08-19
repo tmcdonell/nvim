@@ -38,6 +38,10 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 " A plugin for asynchronous :make using Neovim's job-control functionality
 Plug 'benekastah/neomake'
 
+" Happy Haskell programming on Vim, powered by ghc-mod
+Plug 'eagletmt/ghcmod-vim'
+Plug 'Shougo/vimproc.vim'
+
 " Integration of Scala into Vim
 Plug 'derekwyatt/vim-scala'
 
