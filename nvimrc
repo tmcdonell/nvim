@@ -208,7 +208,7 @@ tnoremap <C-k> <C-\><C-n>:bprevious<CR>
 
 " Ctrl + l = close buffer
 nnoremap <C-l>           :bdelete<CR>
-nnoremap <C-l> <C-\><C-n>:bdelete<CR>
+tnoremap <C-l> <C-\><C-n>:bdelete!<CR>
 
 " (buffer id) + Leader = jump to buffer
 let buffer_id = 1
