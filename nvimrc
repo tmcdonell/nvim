@@ -490,7 +490,7 @@ augroup Haskell
   autocmd FileType haskell nnoremap <silent> <LocalLeader>d :GhcModSigCodegen<CR>
 
   " ghci
-  autocmd FileType haskell nnoremap <silent> <LocalLeader>q :T ./cabal quick "%"<CR>
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>q :T :q<CR>:T ./cabal quick "%"<CR>
   autocmd FileType haskell nnoremap <silent> <LocalLeader>Q :T :q<CR>
   autocmd FileType haskell nnoremap <silent> <LocalLeader>r :T :r<CR>
   autocmd FileType haskell nnoremap <silent> <LocalLeader>E viw:TREPLSend<CR>
