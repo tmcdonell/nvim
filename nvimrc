@@ -306,9 +306,9 @@ nmap ga <Plug>(EasyAlign)
 
 "-- Tabular ------------------------------------------------------------
 
-" Align = or += or &= or == or ==>
-nnoremap <Leader>a= :Tabularize /[+&]\?=\+[>]\?<CR>
-vnoremap <Leader>a= :Tabularize /[+&]\?=\+[>]\?<CR>
+" Align = or += or &= or /= or == or ==>
+nnoremap <Leader>a= :Tabularize /[+&/]\?=\+[>]\?<CR>
+vnoremap <Leader>a= :Tabularize /[+&/]\?=\+[>]\?<CR>
 
 " Align -> or <-
 nnoremap <Leader>a- :Tabularize /-\+>\\|<-\+<CR>
