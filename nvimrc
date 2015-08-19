@@ -491,7 +491,9 @@ augroup Haskell
 
   " ghci
   autocmd FileType haskell nnoremap <silent> <LocalLeader>q :T ./cabal quick "%"<CR>
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>Q :T :q<CR>
   autocmd FileType haskell nnoremap <silent> <LocalLeader>r :T :r<CR>
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>E viw:TREPLSend<CR>
   autocmd FileType haskell nnoremap <silent> <LocalLeader>e :TREPLSend<CR>
   autocmd FileType haskell vnoremap <silent> <LocalLeader>e :TREPLSend<CR>
 augroup END
