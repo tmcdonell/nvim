@@ -60,7 +60,7 @@ syn match hsConSym "`\(\<[A-Z][a-zA-Z0-9_']*\.\)\=[A-Z][a-zA-Z0-9_']*`"
 
 " Toplevel Template Haskell support
 "sy match hsTHTopLevel "^[a-z]\(\(.\&[^=]\)\|\(\n[^a-zA-Z0-9]\)\)*"
-sy match hsTHIDTopLevel "^[a-z]\S*" 
+sy match hsTHIDTopLevel "^[a-z]\S*"
 sy match hsTHTopLevel "^\$(\?" nextgroup=hsTHTopLevelName
 sy match hsTHTopLevelName "[a-z]\S*" contained
 
@@ -81,7 +81,7 @@ sy match hs_InfixOpFunctionName "^\(\(\w\|[[\]{}]\)\+\|\(\".*\"\)\|\('.*'\)\)\s*
 
 sy match hs_OpFunctionName        "(\(\W\&[^(),\"]\)\+)" contained
 "sy region hs_Function start="^["'a-z_([{]" end="=\(\s\|\n\|\w\|[([]\)" keepend extend
-sy region hs_Function start="^["'a-zA-Z_([{]\(\(.\&[^=]\)\|\(\n\s\)\)*=" end="\(\s\|\n\|\w\|[([]\)" 
+sy region hs_Function start="^["'a-zA-Z_([{]\(\(.\&[^=]\)\|\(\n\s\)\)*=" end="\(\s\|\n\|\w\|[([]\)"
         \ contains=hs_OpFunctionName,hs_InfixOpFunctionName,hs_InfixFunctionName,hs_FunctionName,hsType,hsConSym,hsVarSym,hsString,hsCharacter
 
 sy match hs_DeclareFunction "^[a-z_(]\S*\(\s\|\n\)*::" contains=hs_FunctionName,hs_OpFunctionName
@@ -109,7 +109,7 @@ syn keyword hsBoolean True False
 syn region	hsPackageString	start=+L\="+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end='$' contains=cSpecial contained
 sy match   hsModuleName  excludenl "\([A-Z]\w*\.\?\)*" contained
 
-sy match hsImport "\<import\>\s\+\(qualified\s\+\)\?\(\<\(\w\|\.\)*\>\)" 
+sy match hsImport "\<import\>\s\+\(qualified\s\+\)\?\(\<\(\w\|\.\)*\>\)"
     \ contains=hsModuleName,hsImportLabel
     \ nextgroup=hsImportParams,hsImportIllegal skipwhite
 sy keyword hsImportLabel import qualified contained
@@ -158,7 +158,7 @@ sy match hsExportModule "\<module\>\(\s\|\t\|\n\)*\([A-Z]\w*\.\?\)*" contained c
 sy keyword hsModuleStartLabel module contained
 sy keyword hsModuleWhereLabel where contained
 
-syn match hsModuleStart "^module\(\s\|\n\)*\(\<\(\w\|\.\)*\>\)\(\s\|\n\)*" 
+syn match hsModuleStart "^module\(\s\|\n\)*\(\<\(\w\|\.\)*\>\)\(\s\|\n\)*"
   \ contains=hsModuleStartLabel,hsModuleName
   \ nextgroup=hsModuleCommentA,hsModuleExports,hsModuleWhereLabel
 
@@ -199,10 +199,11 @@ sy match   hsNumber		"\<[0-9]\+\>\|\<0[xX][0-9a-fA-F]\+\>\|\<0[oO][0-7]\+\>"
 sy match   hsFloat		"\<[0-9]\+\.[0-9]\+\([eE][-+]\=[0-9]\+\)\=\>"
 
 " Comments
-sy keyword hsCommentTodo    TODO FIXME XXX TBD contained
-sy match   hsLineComment      "---*\([^-!#$%&\*\+./<=>\?@\\^|~].*\)\?$" contains=hsCommentTodo,@Spell
-sy region  hsBlockComment     start="{-"  end="-}" contains=hsBlockComment,hsCommentTodo,@Spell
+sy keyword hsCommentTodo   TODO FIXME XXX TBD contained
+sy match   hsLineComment   "---*\([^-!#$%&\*\+./<=>\?@\\^|~].*\)\?$" contains=hsCommentTodo,@Spell
+sy region  hsBlockComment  start="{-"  end="-}" contains=hsBlockComment,hsCommentTodo,@Spell
 sy region  hsPragma	       start="{-#" end="#-}"
+sy match   hsShebang       "\%^#!.*$"
 
 " QuasiQuotation
 sy region hsQQ start="\[\$" end="|\]"me=e-2 keepend contains=hsQQVarID,hsQQContent nextgroup=hsQQEnd
@@ -305,7 +306,7 @@ if version >= 508 || !exists("did_hs_syntax_inits")
   HiLink hsNumber           Number
   HiLink hsFloat            Float
 
-  HiLink hsLiterateComment		  hsComment
+  HiLink hsLiterateComment  hsComment
   HiLink hsBlockComment     hsComment
   HiLink hsLineComment      hsComment
   HiLink hsModuleCommentA   hsComment
@@ -313,7 +314,8 @@ if version >= 508 || !exists("did_hs_syntax_inits")
   HiLink hsComment          Comment
   HiLink hsCommentTodo      Todo
   HiLink hsPragma           SpecialComment
-  HiLink hsBoolean			  Boolean
+  HiLink hsShebang          SpecialComment
+  HiLink hsBoolean          Boolean
 
   HiLink hsDelimTypeExport  hsType
   HiLink hsType             Type
