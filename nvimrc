@@ -481,9 +481,8 @@ augroup END
 augroup Haskell
   autocmd!
 
-  "autocmd BufNewFile,BufRead *.dump-cmm set filetype=c
-  "autocmd BufNewFile,BufRead *.hs,*.hsc,*.lhs,*.dump-simpl set filetype=haskell
-  "autocmd BufNewFile,BufRead *.lhs set syntax=lhaskell
+  autocmd BufNewFile,BufRead *.maxml set syntax=haskell " MaxML
+
   autocmd FileType haskell setlocal iskeyword+='
   autocmd FileType haskell setlocal tabstop=4
   autocmd FileType haskell setlocal shiftwidth=4
