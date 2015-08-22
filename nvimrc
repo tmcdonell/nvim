@@ -408,6 +408,9 @@ augroup END
 
 "-- Bash ---------------------------------------------------------------
 
+" All shell scripts allow POSIX extensions, e.g $(..) instead of `..`
+let g:is_posix=1
+
 augroup Bash
   autocmd!
   autocmd FileType sh setlocal tabstop=2
