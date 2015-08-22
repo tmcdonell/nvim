@@ -429,6 +429,16 @@ augroup Pandoc
 augroup END
 
 
+"-- YAML ---------------------------------------------------------------
+
+augroup YAML
+  autocmd!
+  autocmd FileType yaml setlocal tabstop=2
+  autocmd FileType yaml setlocal shiftwidth=2
+  autocmd FileType yaml setlocal textwidth=72
+augroup END
+
+
 "-- C ------------------------------------------------------------------
 
 augroup C
