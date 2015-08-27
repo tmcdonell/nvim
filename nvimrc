@@ -5,6 +5,9 @@ call plug#begin('~/.nvim/plugged')
 " A Git wrapper so awesome, it should be illegal
 Plug 'tpope/vim-fugitive'
 
+" Delete buffers and close files in Vim without messing up your layout.
+Plug 'moll/vim-bbye'
+
 " Fuzzy file, buffer, mru, tag, etc finder
 Plug 'kien/ctrlp.vim'
 
@@ -44,6 +47,9 @@ Plug 'Shougo/vimproc.vim'
 
 " Integration of Scala into Vim
 Plug 'derekwyatt/vim-scala'
+
+" Zsh syntax
+Plug 'jystic/vim-zsh'
 
 call plug#end()
 
@@ -151,9 +157,35 @@ tnoremap <C-w><C-s> <C-\><C-n><C-w><C-s>
 tnoremap <C-w>v     <C-\><C-n><C-w>v
 tnoremap <C-w><C-v> <C-\><C-n><C-w><C-v>
 
+" Ctrl + w + p = move cursor to the previous window
+tnoremap <C-w>p     <C-\><C-n><C-w>p
+tnoremap <C-w><C-p> <C-\><C-n><C-w><C-p>
+
 " Ctrl + w + w = move cursor to window below/right of the current one
 tnoremap <C-w>w     <C-\><C-n><C-w>w
 tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
+
+" Ctrl + w + u = move cursor to window above/left of the current one
+nnoremap <C-w>u     <C-w>w
+nnoremap <C-w><C-u> <C-w><C-w>
+tnoremap <C-w>u     <C-\><C-n><C-w>w
+tnoremap <C-w><C-u> <C-\><C-n><C-w><C-w>
+
+" Ctrl + w + h = move cursor to window on the left
+tnoremap <C-w>h     <C-\><C-n><C-w>h
+tnoremap <C-w><C-h> <C-\><C-n><C-w><C-h>
+
+" Ctrl + w + j = move cursor to window below
+tnoremap <C-w>j     <C-\><C-n><C-w>j
+tnoremap <C-w><C-j> <C-\><C-n><C-w><C-j>
+
+" Ctrl + w + k = move cursor to window above
+tnoremap <C-w>k     <C-\><C-n><C-w>k
+tnoremap <C-w><C-k> <C-\><C-n><C-w><C-k>
+
+" Ctrl + w + l = move cursor to window on the right
+tnoremap <C-w>l     <C-\><C-n><C-w>l
+tnoremap <C-w><C-l> <C-\><C-n><C-w><C-l>
 
 " Ctrl + w + c = close current window
 tnoremap <C-w>c <C-\><C-n><C-w>c
@@ -207,8 +239,8 @@ nnoremap <C-k>           :bprevious<CR>
 tnoremap <C-k> <C-\><C-n>:bprevious<CR>
 
 " Ctrl + l = close buffer
-nnoremap <C-l>           :bdelete<CR>
-tnoremap <C-l> <C-\><C-n>:bdelete!<CR>
+nnoremap <C-l>           :Bdelete<CR>
+tnoremap <C-l> <C-\><C-n>:Bdelete!<CR>
 
 " (buffer id) + Leader = jump to buffer
 let buffer_id = 1
@@ -406,7 +438,7 @@ augroup VimL
 augroup END
 
 
-"-- Bash ---------------------------------------------------------------
+"-- Shell --------------------------------------------------------------
 
 " All shell scripts allow POSIX extensions, e.g $(..) instead of `..`
 let g:is_posix=1
@@ -416,6 +448,13 @@ augroup Bash
   autocmd FileType sh setlocal tabstop=2
   autocmd FileType sh setlocal shiftwidth=2
   autocmd FileType sh setlocal textwidth=72
+augroup END
+
+augroup Zsh
+  autocmd!
+  autocmd FileType zsh setlocal tabstop=2
+  autocmd FileType zsh setlocal shiftwidth=2
+  autocmd FileType zsh setlocal textwidth=72
 augroup END
 
 
@@ -505,6 +544,7 @@ augroup Haskell
   autocmd FileType haskell nnoremap <silent> <LocalLeader>q :T :q<CR>:T ./cabal quick "%"<CR>
   autocmd FileType haskell nnoremap <silent> <LocalLeader>Q :T :q<CR>
   autocmd FileType haskell nnoremap <silent> <LocalLeader>r :T :r<CR>
+  autocmd FileType haskell nnoremap <silent> <LocalLeader>s :T :r<CR>:T tests<CR>
   autocmd FileType haskell nnoremap <silent> <LocalLeader>E viw:TREPLSend<CR>
   autocmd FileType haskell nnoremap <silent> <LocalLeader>e :TREPLSend<CR>
   autocmd FileType haskell vnoremap <silent> <LocalLeader>e :TREPLSend<CR>
