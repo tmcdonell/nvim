@@ -51,6 +51,12 @@ Plug 'derekwyatt/vim-scala'
 " Zsh syntax
 Plug 'jystic/vim-zsh'
 
+" Icicle syntax
+Plug '~/src/ambiata/icicle-vim'
+
+" Advanced syntax highlighting for GNU As
+Plug 'Shirk/vim-gas'
+
 call plug#end()
 
 
@@ -478,6 +484,25 @@ augroup YAML
 augroup END
 
 
+"-- Make ---------------------------------------------------------------
+
+augroup Make
+  autocmd!
+  autocmd FileType make set tabstop=8
+  autocmd FileType make set shiftwidth=8
+augroup END
+
+
+"-- Asm ----------------------------------------------------------------
+
+augroup Asm
+  autocmd!
+  autocmd BufNewFile,BufRead *.s set filetype=gas
+  autocmd FileType gas set tabstop=2
+  autocmd FileType gas set shiftwidth=2
+augroup END
+
+
 "-- C ------------------------------------------------------------------
 
 augroup C
@@ -521,6 +546,7 @@ augroup Haskell
   autocmd!
 
   autocmd BufNewFile,BufRead *.maxml set syntax=haskell " MaxML
+  autocmd BufNewFile,BufRead *.core  set syntax=haskell " GHC Core
 
   autocmd FileType haskell setlocal iskeyword+='
   autocmd FileType haskell setlocal tabstop=4
