@@ -555,9 +555,12 @@ augroup Haskell
   autocmd FileType haskell setlocal include=^import\\s*\\(qualified\\)\\?\\s*
   autocmd FileType haskell setlocal includeexpr=substitute(v:fname,'\\.','/','g').'.hs'
 
-  " Sort then align imports
+  " Sort then align imports, including as and hiding keywords
+  " Note that this only sorts the current block (inner paragraph)
   autocmd FileType haskell nnoremap <silent> <Leader>ai
-    \ vip :sort r /\u.*/<CR> <Bar> :Tabularize /^import qualified\\|^import\\|^$<CR>
+    \ vip :sort r /\u.*/<CR>
+    \ <Bar> :Tabularize /^import qualified\>\\|^import\>\\|^$<CR>
+    \ <Bar> :Tabularize /\<as\>\(.\)*$\\|\<hiding\>\(.\)*$\\|^import\s\+\(qualified\s\)*\(\w\|\.\)*$\\|^$<CR>
 
   " ghc-mod
   autocmd FileType haskell nnoremap <silent> <LocalLeader>t :GhcModType<CR>
