@@ -206,6 +206,14 @@ augroup Terminal
   autocmd BufLeave term://* stopinsert
 augroup END
 
+augroup neoterm_setup
+  " Turn off spell checking in the terminal window
+  autocmd TermOpen term://*NEOTERM setlocal nospell
+
+  " Start the terminal in insert mode
+  autocmd TermOpen term://*NEOTERM startinsert
+augroup END
+
 
 "-- Buffers ------------------------------------------------------------
 
